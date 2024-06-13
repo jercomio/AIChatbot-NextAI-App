@@ -1,0 +1,116 @@
+Next.js Project StructureThis page provides an overview of the project structure of a Next.js application. It covers top-level files and folders, configuration files, and routing conventions within the app and pages directories.
+Click the file and folder names to learn more about each convention.
+Top-level folders
+  
+    
+    
+  
+
+Top-level folders are used to organize your application's code and static assets.
+
+appApp RouterpagesPages RouterpublicStatic assets to be servedsrcOptional application source folder
+Top-level files
+  
+    
+    
+  
+
+Top-level files are used to configure your application, manage dependencies, run middleware, integrate monitoring tools, and define environment variables.
+Next.jsnext.config.jsConfiguration file for Next.jspackage.jsonProject dependencies and scriptsinstrumentation.tsOpenTelemetry and Instrumentation filemiddleware.tsNext.js request middleware.envEnvironment variables.env.localLocal environment variables.env.productionProduction environment variables.env.developmentDevelopment environment variables.eslintrc.jsonConfiguration file for ESLint.gitignoreGit files and folders to ignorenext-env.d.tsTypeScript declaration file for Next.jstsconfig.jsonConfiguration file for TypeScriptjsconfig.jsonConfiguration file for JavaScript
+app Routing Conventions
+  
+    
+    
+  
+
+The following file conventions are used to define routes and handle metadata in the app router.
+Routing Files
+  
+    
+    
+  
+
+layout.js .jsx .tsxLayoutpage.js .jsx .tsxPageloading.js .jsx .tsxLoading UInot-found.js .jsx .tsxNot found UIerror.js .jsx .tsxError UIglobal-error.js .jsx .tsxGlobal error UIroute.js .tsAPI endpointtemplate.js .jsx .tsxRe-rendered layoutdefault.js .jsx .tsxParallel route fallback page
+Nested Routes
+  
+    
+    
+  
+
+folderRoute segmentfolder/folderNested route segment
+Dynamic Routes
+  
+    
+    
+  
+
+[folder]Dynamic route segment[...folder]Catch-all route segment[[...folder]]Optional catch-all route segment
+Route Groups and Private Folders
+  
+    
+    
+  
+
+(folder)Group routes without affecting routing_folderOpt folder and all child segments out of routing
+Parallel and Intercepted Routes
+  
+    
+    
+  
+
+@folderNamed slot(.)folderIntercept same level(..)folderIntercept one level above(..)(..)folderIntercept two levels above(...)folderIntercept from root
+Metadata File Conventions
+  
+    
+    
+  
+
+App Icons
+  
+    
+    
+  
+
+favicon.icoFavicon fileicon.ico .jpg .jpeg .png .svgApp Icon fileicon.js .ts .tsxGenerated App Iconapple-icon.jpg .jpeg, .pngApple App Icon fileapple-icon.js .ts .tsxGenerated Apple App Icon
+Open Graph and Twitter Images
+  
+    
+    
+  
+
+opengraph-image.jpg .jpeg .png .gifOpen Graph image fileopengraph-image.js .ts .tsxGenerated Open Graph imagetwitter-image.jpg .jpeg .png .gifTwitter image filetwitter-image.js .ts .tsxGenerated Twitter image
+SEO
+  
+    
+    
+  
+
+sitemap.xmlSitemap filesitemap.js .tsGenerated Sitemaprobots.txtRobots filerobots.js .tsGenerated Robots file
+pages Routing Conventions
+  
+    
+    
+  
+
+The following file conventions are used to define routes in the pages router.
+Special Files
+  
+    
+    
+  
+
+_app.js .jsx .tsxCustom App_document.js .jsx .tsxCustom Document_error.js .jsx .tsxCustom Error Page404.js .jsx .tsx404 Error Page500.js .jsx .tsx500 Error Page
+Routes
+  
+    
+    
+  
+
+Folder conventionindex.js .jsx .tsxHome pagefolder/index.js .jsx .tsxNested pageFile conventionindex.js .jsx .tsxHome pagefile.js .jsx .tsxNested page
+Dynamic Routes
+  
+    
+    
+  
+
+Folder convention[folder]/index.js .jsx .tsxDynamic route segment[...folder]/index.js .jsx .tsxCatch-all route segment[[...folder]]/index.js .jsx .tsxOptional catch-all route segmentFile convention[file].js .jsx .tsxDynamic route segment[...file].js .jsx .tsxCatch-all route segment[[...file]].js .jsx .tsxOptional catch-all route segment

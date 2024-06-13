@@ -1,0 +1,5 @@
+poweredByHeader
+By default Next.js will add the x-powered-by header. To opt-out of it, open next.config.js and disable the poweredByHeader config:
+next.config.jsmodule.exports = {
+  poweredByHeader: false,
+}

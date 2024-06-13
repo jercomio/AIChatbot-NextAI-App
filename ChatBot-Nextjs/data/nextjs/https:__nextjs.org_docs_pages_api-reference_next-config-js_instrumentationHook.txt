@@ -1,0 +1,7 @@
+instrumentationHook
+The experimental instrumentationHook option allows you to set up instrumentation via the instrumentation file in your Next.js App.
+next.config.jsmodule.exports = {
+  experimental: {
+    instrumentationHook: true,
+  },
+}

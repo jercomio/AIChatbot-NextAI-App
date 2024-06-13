@@ -1,0 +1,30 @@
+{
+  "name": "chatbot-nextjs",
+  "version": "1.0.0",
+  "description": "ChatBot with AI",
+  "main": "index.js",
+
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "embedding": "ts-node embedding.ts",
+    "start": "node --enable-source-maps --experimental-specifier-resolution=node --no-warnings --loader ts-node/esm"
+  },
+  "keywords": [
+    "chatbot"
+  ],
+  "author": "@jercomio",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.12.13",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "@dqbd/tiktoken": "^1.0.15",
+    "@neondatabase/serverless": "^0.9.3",
+    "dotenv": "^16.4.5",
+    "openai": "^4.47.2",
+    "playwright": "^1.44.1",
+    "tslog": "^4.9.2"
+  }
+}

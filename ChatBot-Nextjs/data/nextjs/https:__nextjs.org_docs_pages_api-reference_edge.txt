@@ -1,0 +1,80 @@
+Edge Runtime
+The Next.js Edge Runtime is based on standard Web APIs, it supports the following APIs:
+Network APIs
+  
+    
+    
+  
+
+APIDescriptionBlobRepresents a blobfetchFetches a resourceFetchEventRepresents a fetch eventFileRepresents a fileFormDataRepresents form dataHeadersRepresents HTTP headersRequestRepresents an HTTP requestResponseRepresents an HTTP responseURLSearchParamsRepresents URL search parametersWebSocketRepresents a websocket connection
+Encoding APIs
+  
+    
+    
+  
+
+APIDescriptionatobDecodes a base-64 encoded stringbtoaEncodes a string in base-64TextDecoderDecodes a Uint8Array into a stringTextDecoderStreamChainable decoder for streamsTextEncoderEncodes a string into a Uint8ArrayTextEncoderStreamChainable encoder for streams
+Stream APIs
+  
+    
+    
+  
+
+APIDescriptionReadableStreamRepresents a readable streamReadableStreamBYOBReaderRepresents a reader of a ReadableStreamReadableStreamDefaultReaderRepresents a reader of a ReadableStreamTransformStreamRepresents a transform streamWritableStreamRepresents a writable streamWritableStreamDefaultWriterRepresents a writer of a WritableStream
+Crypto APIs
+  
+    
+    
+  
+
+APIDescriptioncryptoProvides access to the cryptographic functionality of the platformCryptoKeyRepresents a cryptographic keySubtleCryptoProvides access to common cryptographic primitives, like hashing, signing, encryption or decryption
+Web Standard APIs
+  
+    
+    
+  
+
+APIDescriptionAbortControllerAllows you to abort one or more DOM requests as and when desiredArrayRepresents an array of valuesArrayBufferRepresents a generic, fixed-length raw binary data bufferAtomicsProvides atomic operations as static methodsBigIntRepresents a whole number with arbitrary precisionBigInt64ArrayRepresents a typed array of 64-bit signed integersBigUint64ArrayRepresents a typed array of 64-bit unsigned integersBooleanRepresents a logical entity and can have two values: true and falseclearIntervalCancels a timed, repeating action which was previously established by a call to setInterval()clearTimeoutCancels a timed, repeating action which was previously established by a call to setTimeout()consoleProvides access to the browser's debugging consoleDataViewRepresents a generic view of an ArrayBufferDateRepresents a single moment in time in a platform-independent formatdecodeURIDecodes a Uniform Resource Identifier (URI) previously created by encodeURI or by a similar routinedecodeURIComponentDecodes a Uniform Resource Identifier (URI) component previously created by encodeURIComponent or by a similar routineDOMExceptionRepresents an error that occurs in the DOMencodeURIEncodes a Uniform Resource Identifier (URI) by replacing each instance of certain characters by one, two, three, or four escape sequences representing the UTF-8 encoding of the characterencodeURIComponentEncodes a Uniform Resource Identifier (URI) component by replacing each instance of certain characters by one, two, three, or four escape sequences representing the UTF-8 encoding of the characterErrorRepresents an error when trying to execute a statement or accessing a propertyEvalErrorRepresents an error that occurs regarding the global function eval()Float32ArrayRepresents a typed array of 32-bit floating point numbersFloat64ArrayRepresents a typed array of 64-bit floating point numbersFunctionRepresents a functionInfinityRepresents the mathematical Infinity valueInt8ArrayRepresents a typed array of 8-bit signed integersInt16ArrayRepresents a typed array of 16-bit signed integersInt32ArrayRepresents a typed array of 32-bit signed integersIntlProvides access to internationalization and localization functionalityisFiniteDetermines whether a value is a finite numberisNaNDetermines whether a value is NaN or notJSONProvides functionality to convert JavaScript values to and from the JSON formatMapRepresents a collection of values, where each value may occur only onceMathProvides access to mathematical functions and constantsNumberRepresents a numeric valueObjectRepresents the object that is the base of all JavaScript objectsparseFloatParses a string argument and returns a floating point numberparseIntParses a string argument and returns an integer of the specified radixPromiseRepresents the eventual completion (or failure) of an asynchronous operation, and its resulting valueProxyRepresents an object that is used to define custom behavior for fundamental operations (e.g. property lookup, assignment, enumeration, function invocation, etc)queueMicrotaskQueues a microtask to be executedRangeErrorRepresents an error when a value is not in the set or range of allowed valuesReferenceErrorRepresents an error when a non-existent variable is referencedReflectProvides methods for interceptable JavaScript operationsRegExpRepresents a regular expression, allowing you to match combinations of charactersSetRepresents a collection of values, where each value may occur only oncesetIntervalRepeatedly calls a function, with a fixed time delay between each callsetTimeoutCalls a function or evaluates an expression after a specified number of millisecondsSharedArrayBufferRepresents a generic, fixed-length raw binary data bufferStringRepresents a sequence of charactersstructuredCloneCreates a deep copy of a valueSymbolRepresents a unique and immutable data type that is used as the key of an object propertySyntaxErrorRepresents an error when trying to interpret syntactically invalid codeTypeErrorRepresents an error when a value is not of the expected typeUint8ArrayRepresents a typed array of 8-bit unsigned integersUint8ClampedArrayRepresents a typed array of 8-bit unsigned integers clamped to 0-255Uint32ArrayRepresents a typed array of 32-bit unsigned integersURIErrorRepresents an error when a global URI handling function was used in a wrong wayURLRepresents an object providing static methods used for creating object URLsURLPatternRepresents a URL patternURLSearchParamsRepresents a collection of key/value pairsWeakMapRepresents a collection of key/value pairs in which the keys are weakly referencedWeakSetRepresents a collection of objects in which each object may occur only onceWebAssemblyProvides access to WebAssembly
+Next.js Specific Polyfills
+  
+    
+    
+  
+
+
+AsyncLocalStorage
+
+Environment Variables
+  
+    
+    
+  
+
+You can use process.env to access Environment Variables for both next dev and next build.
+Unsupported APIs
+  
+    
+    
+  
+
+The Edge Runtime has some restrictions including:
+
+Native Node.js APIs are not supported. For example, you can't read or write to the filesystem.
+node_modules can be used, as long as they implement ES Modules and do not use native Node.js APIs.
+Calling require directly is not allowed. Use ES Modules instead.
+
+The following JavaScript language features are disabled, and will not work:
+APIDescriptionevalEvaluates JavaScript code represented as a stringnew Function(evalString)Creates a new function with the code provided as an argumentWebAssembly.compileCompiles a WebAssembly module from a buffer sourceWebAssembly.instantiateCompiles and instantiates a WebAssembly module from a buffer source
+In rare cases, your code could contain (or import) some dynamic code evaluation statements which can not be reached at runtime and which can not be removed by treeshaking.
+You can relax the check to allow specific files with your Middleware or Edge API Route exported configuration:
+export const config = {
+  runtime: 'edge', // for Edge API Routes only
+  unstable_allowDynamic: [
+    // allows a single file
+    '/lib/utilities.js',
+    // use a glob to allow anything in the function-bind 3rd party module
+    '/node_modules/function-bind/**',
+  ],
+}
+unstable_allowDynamic is a glob, or an array of globs, ignoring dynamic code evaluation for specific files. The globs are relative to your application root folder.
+Be warned that if these statements are executed on the Edge, they will throw and cause a runtime error.

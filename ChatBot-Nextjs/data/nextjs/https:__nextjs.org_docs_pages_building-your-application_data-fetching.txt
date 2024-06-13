@@ -1,0 +1,25 @@
+Data FetchingData fetching in Next.js allows you to render your content in different ways, depending on your application's use case. These include pre-rendering with Server-side Rendering or Static Generation, and updating or creating content at runtime with Incremental Static Regeneration.
+Examples
+  
+    
+    
+  
+
+
+WordPress Example(Demo)
+Blog Starter using markdown files (Demo)
+DatoCMS Example (Demo)
+TakeShape Example (Demo)
+Sanity Example (Demo)
+Prismic Example (Demo)
+Contentful Example (Demo)
+Strapi Example (Demo)
+Prepr Example (Demo)
+Agility CMS Example (Demo)
+Cosmic Example (Demo)
+ButterCMS Example (Demo)
+Storyblok Example (Demo)
+GraphCMS Example (Demo)
+Kontent Example (Demo)
+Static Tweet Demo
+Enterspeed Example (Demo)

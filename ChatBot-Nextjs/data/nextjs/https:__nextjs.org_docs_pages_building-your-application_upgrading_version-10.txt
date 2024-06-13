@@ -1,0 +1,8 @@
+Version 10There were no breaking changes between versions 9 and 10.
+To upgrade to version 10, run the following command:
+Terminalnpm i next@10
+Terminalyarn add next@10
+Terminalpnpm up next@10
+Terminalbun add next@10
+
+Good to know: If you are using TypeScript, ensure you also upgrade @types/react and @types/react-dom to their corresponding versions.
