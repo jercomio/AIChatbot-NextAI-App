@@ -43,7 +43,7 @@ export const ChatApp = () => {
 
   const isEmptyMessages = messages.length === 0;
 
-  // Pas recommandé
+  // Not recommanded
   useEffect(() => {
     const ul = ulRef.current;
     if (!ul) return;

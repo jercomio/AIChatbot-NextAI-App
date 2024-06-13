@@ -142,7 +142,7 @@ export async function POST(req: Request) {
         function read() {
           reader.read().then(({ done, value }) => {
             if (done) {
-              // Ajoute ton texte personnalisé à la fin de la stream
+              // Add your custom text to the end of the stream
               controller.enqueue(`\n\n### Source 
               
               ${formattedResult.map((r) => `* [${r.url}](${r.url})\n`).join("")}`);
@@ -150,7 +150,7 @@ export async function POST(req: Request) {
               return;
             }
 
-            // Ajoute les données de la stream OpenAI à ta nouvelle stream
+            // Add the stream data from OpenAI to the new stream
             controller.enqueue(value);
             read();
           });
