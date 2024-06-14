@@ -110,7 +110,7 @@ export const ChatApp = () => {
                     {m.role === "user" ? "U" : "A"}
                   </AvatarFallback>
                   {m.role !== "user" ? (
-                    <AvatarImage src="/images/nextjs.png" />
+                    <AvatarImage src="/img/logo/nextjs.svg" />
                   ) : null}
                 </Avatar>
                 <CardTitle>{m.role === "user" ? "User" : "AI"}</CardTitle>
