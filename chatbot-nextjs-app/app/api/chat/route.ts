@@ -1,12 +1,17 @@
 import { getNeon } from '@/lib/neon';
-import { openai } from '@/lib/openai';
+// import { openai } from '@/lib/openai';
 import { SYSTEM_MESSAGE } from '@/System-prompt';
-import { OpenAIStream, StreamingTextResponse, Message } from 'ai';
+// import { OpenAIStream, StreamingTextResponse, Message } from 'ai';
 import { headers } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { ChatCompletionMessageParam } from 'openai/resources/index.mjs';
 
+// update dependancies
+import { openai } from '@ai-sdk/openai';
+import { StreamingTextResponse, streamText, StreamData } from 'ai';
+
 export const runtime = "edge"
+
 
 const checkUsage = async () => {
   const headerList = headers();
@@ -43,7 +48,8 @@ const checkUsage = async () => {
 }
 
 export async function POST(req: Request) {
-  const { messages } = await req.json() as { messages: Message[] }
+  // const { messages } = await req.json() as { messages: Message[] }
+  const { messages } = await req.json()
 
   try {
     await checkUsage();
@@ -62,6 +68,7 @@ export async function POST(req: Request) {
   const lastMessage = messages[messages.length - 1]
   const userPrompt = lastMessage.content
 
+  
   try {
     const response = await openai.embeddings.create({
       input: userPrompt,
@@ -125,40 +132,55 @@ export async function POST(req: Request) {
       }]
   
     // Ask OpenAI for a streaming chat completion given the prompt
-    const openAIResponse = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo',
-      stream: true,
-      messages: finalMessages,
-    })
+    // const openAIResponse = await openai.chat.completions.create({
+    //   model: 'gpt-3.5-turbo',
+    //   stream: true,
+    //   messages: finalMessages,
+    // })
+    const openAIResponse = await streamText({
+      model: openai('gpt-3.5-turbo'),
+      messages,
+    });
 
     // Convert the response into a friendly text-stream
-    const originalStream = OpenAIStream(openAIResponse)
+    // const originalStream = OpenAIStream(openAIResponse)
+    
 
-    const editedStream = new ReadableStream({
-      start(controller) {
-        const reader = originalStream.getReader();
-        read();
+    // const editedStream = new ReadableStream({
+    //   start(controller) {
+    //     const reader = originalStream.getReader();
+    //     read();
 
-        function read() {
-          reader.read().then(({ done, value }) => {
-            if (done) {
-              // Add your custom text to the end of the stream
-              controller.enqueue(`\n\n### Source 
+    //     function read() {
+    //       reader.read().then(({ done, value }) => {
+    //         if (done) {
+    //           // Add your custom text to the end of the stream
+    //           controller.enqueue(`\n\n### Source 
               
-              ${formattedResult.map((r) => `* [${r.url}](${r.url})\n`).join("")}`);
-              controller.close();
-              return;
-            }
+    //           ${formattedResult.map((r) => `* [${r.url}](${r.url})\n`).join("")}`);
+    //           controller.close();
+    //           return;
+    //         }
 
-            // Add the stream data from OpenAI to the new stream
-            controller.enqueue(value);
-            read();
-          });
-        }
-      },
-    });
+    //         // Add the stream data from OpenAI to the new stream
+    //         controller.enqueue(value);
+    //         read();
+    //       });
+    //     }
+    //   },
+    // });
+    const data = new StreamData();
+
+  const stream = openAIResponse.toAIStream({
+    onFinal(_) {
+      data.close();
+    },
+  });
+
     // Respond with the stream
-    return new StreamingTextResponse(editedStream)
+    // return new StreamingTextResponse(editedStream)
+    return new StreamingTextResponse(stream, {}, data);
+
   } catch {
 
   }
